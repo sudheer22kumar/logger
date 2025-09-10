@@ -1,7 +1,7 @@
 import logging as _logging
 
 
-class log:
+class Log:
     def __init__(self, name=__name__):
         self.name = name
         if "." in name:
@@ -113,7 +113,7 @@ class log:
 def loggers():
     logger = {}
     for level in ["CRITICAL", "ERROR", "WARNING", "INFO", "DEBUG", "LOCKS"]:
-        logger[level] = log(name="CLASSES." + level)
+        logger[level] = Log(name="CLASSES." + level)
         logger[level].set_handler(
             level=level if level != "LOCKS" else "INFO",
             formatter=(
