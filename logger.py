@@ -5,9 +5,7 @@ class Log:
     def __init__(self, name=__name__):
         self.name = name
         if "." in name:
-            self.logger = _logging.getLogger(name=self.name.split(".")[0]).getChild(
-                ".".join(self.name.split(".")[1:])
-            )
+            self.logger = _logging.getLogger(name=self.name.split(".")[0]).getChild(".".join(self.name.split(".")[1:]))
         else:
             self.logger = _logging.getLogger(name=self.name)
 
@@ -27,10 +25,7 @@ class Log:
                 self.logger.setLevel("CRITICAL")
                 self.logger.propagate = False
             else:
-                handler_list = [
-                    str(x).strip("<>").split("stderr")[1].strip(" ()")
-                    for x in self.logger.handlers
-                ]
+                handler_list = [str(x).strip("<>").split("stderr")[1].strip(" ()") for x in self.logger.handlers]
                 if "CRITICAL" not in handler_list:
                     self.logger.addHandler(_handler)
                     self.logger.setLevel("CRITICAL")
@@ -45,10 +40,7 @@ class Log:
                 self.logger.setLevel("ERROR")
                 self.logger.propagate = False
             else:
-                handler_list = [
-                    str(x).strip("<>").split("stderr")[1].strip(" ()")
-                    for x in self.logger.handlers
-                ]
+                handler_list = [str(x).strip("<>").split("stderr")[1].strip(" ()") for x in self.logger.handlers]
                 if "ERROR" not in handler_list:
                     self.logger.addHandler(_handler)
                     self.logger.setLevel("ERROR")
@@ -63,10 +55,7 @@ class Log:
                 self.logger.setLevel("WARNING")
                 self.logger.propagate = False
             else:
-                handler_list = [
-                    str(x).strip("<>").split("stderr")[1].strip(" ()")
-                    for x in self.logger.handlers
-                ]
+                handler_list = [str(x).strip("<>").split("stderr")[1].strip(" ()") for x in self.logger.handlers]
                 if "WARNING" not in handler_list:
                     self.logger.addHandler(_handler)
                     self.logger.setLevel("WARNING")
@@ -82,10 +71,7 @@ class Log:
                 self.logger.propagate = False
 
             else:
-                handler_list = [
-                    str(x).strip("<>").split("stderr")[1].strip(" ()")
-                    for x in self.logger.handlers
-                ]
+                handler_list = [str(x).strip("<>").split("stderr")[1].strip(" ()") for x in self.logger.handlers]
                 if "INFO" not in handler_list:
                     self.logger.addHandler(_handler)
                     self.logger.setLevel("INFO")
@@ -100,10 +86,7 @@ class Log:
                 self.logger.setLevel("DEBUG")
                 self.logger.propagate = False
             else:
-                handler_list = [
-                    str(x).strip("<>").split("stderr")[1].strip(" ()")
-                    for x in self.logger.handlers
-                ]
+                handler_list = [str(x).strip("<>").split("stderr")[1].strip(" ()") for x in self.logger.handlers]
                 if "DEBUG" not in handler_list:
                     self.logger.addHandler(_handler)
                     self.logger.setLevel("DEBUG")
