@@ -18,7 +18,7 @@ class PrettyEmbeddedJSONFormatter(_logging.Formatter):
         def pretty_sub(match):
             text = match.group(0)
             try:
-                parsed = json.loads(text)
+                parsed = json.loads(text.replace("'", "\""))
                 return json.dumps(parsed, indent=4)
             except json.JSONDecodeError:
                 # If it's Python-style dict, use eval cautiously
