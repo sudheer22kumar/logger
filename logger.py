@@ -3,13 +3,15 @@ import logging as _logging
 import re
 from pprint import pformat
 
+import json5
+
 
 class LoggerException(Exception):
     pass
 
 
 class PrettyEmbeddedJSONFormatter(_logging.Formatter):
-    json_regex = re.compile(r'(\{.*}|\[.*])')  # crude but works for simple dict/list
+    json_regex = re.compile(r"(\{.*}|\[.*])")  # crude but works for simple dict/list
 
     def format(self, record):
         msg = record.getMessage()
@@ -18,21 +20,24 @@ class PrettyEmbeddedJSONFormatter(_logging.Formatter):
         def pretty_sub(match):
             text = match.group(0)
             try:
-                parsed = json.loads(text.replace("'", "\""))
+                parsed = json.loads(text.replace("'", '"'))
                 return json.dumps(parsed, indent=4)
             except json.JSONDecodeError:
                 # If it's Python-style dict, use eval cautiously
                 try:
                     parsed = eval(text, {"__builtins__": None}, {})
-                    if isinstance(parsed, (dict, list)):
+                    if isinstance(parsed, dict):
+                        return json.dumps(parsed, indent=4)
+                    elif isinstance(parsed, list):
+                        return json.dumps(parsed, indent=4)
+                    else:
                         return pformat(parsed, indent=4)
-                except LoggerException:
+                except (LoggerException, SyntaxError):
                     pass
             return text
 
         pretty_msg = self.json_regex.sub(pretty_sub, msg)
         record.msg = pretty_msg
-        record.args = ()
         return super().format(record)
 
 
@@ -46,9 +51,9 @@ class Log:
             self.logger = _logging.getLogger(name=self.name)
 
     def set_handler(
-            self,
-            level="warn",
-            formatter="%(asctime)s - %(name)s - %(levelname)s \t %(message)s",
+        self,
+        level="warn",
+        formatter="%(asctime)s - %(name)s - %(levelname)s \t %(message)s",
     ):
         """<type_>: "Critical"/ "Error" / "Warning"/ "Info"/ "Debug" """
 

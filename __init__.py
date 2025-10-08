@@ -1,7 +1,3 @@
-from logger import Log, loggers, PrettyEmbeddedJSONFormatter
+from logger import Log, PrettyEmbeddedJSONFormatter, loggers
 
-__ALL__ = [
-    Log,
-    loggers,
-    PrettyEmbeddedJSONFormatter
-]
+__ALL__ = [Log, loggers, PrettyEmbeddedJSONFormatter]
