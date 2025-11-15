@@ -11,7 +11,11 @@ class LoggerException(Exception):
 
 
 class PrettyEmbeddedJSONFormatter(_logging.Formatter):
-    json_regex = re.compile(r"(\{.*}|\[.*])")  # crude but works for simple dict/list
+    """Formatter that pretty-prints embedded JSON/dict objects in log messages."""
+
+    # More specific regex to avoid matching things like [OK] or [INFO]
+    # Matches JSON-like structures: {key:value} or [item1, item2]
+    json_regex = re.compile(r'(\{["\']?\w+["\']?\s*:\s*.*?\}|\[\s*["\']?\w+["\']?\s*[,\]].*?\])')
 
     def format(self, record):
         msg = record.getMessage()
@@ -32,12 +36,17 @@ class PrettyEmbeddedJSONFormatter(_logging.Formatter):
                         return json.dumps(parsed, indent=4)
                     else:
                         return pformat(parsed, indent=4)
-                except (LoggerException, SyntaxError):
+                except (Exception,):  # Catch all exceptions to avoid breaking logging
                     pass
             return text
 
-        pretty_msg = self.json_regex.sub(pretty_sub, msg)
-        record.msg = pretty_msg
+        try:
+            pretty_msg = self.json_regex.sub(pretty_sub, msg)
+            record.msg = pretty_msg
+        except Exception:
+            # If formatting fails, just use the original message
+            pass
+
         return super().format(record)
 
 
