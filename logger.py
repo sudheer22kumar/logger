@@ -15,7 +15,7 @@ class PrettyEmbeddedJSONFormatter(_logging.Formatter):
 
     # More specific regex to avoid matching things like [OK] or [INFO]
     # Matches JSON-like structures: {key:value} or [item1, item2]
-    json_regex = re.compile(r'(\{["\']?\w+["\']?\s*:\s*.*?\}|\[\s*["\']?\w+["\']?\s*[,\]].*?\])')
+    json_regex = re.compile(r'(\{["\']?\w+["\']?\s*:\s*.*\}|\[\s*["\']?\w+["\']?\s*[,\]].*\])')
 
     def format(self, record):
         msg = record.getMessage()
