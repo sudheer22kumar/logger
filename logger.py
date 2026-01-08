@@ -3,8 +3,6 @@ import logging as _logging
 import re
 from pprint import pformat
 
-import json5
-
 
 class LoggerException(Exception):
     pass
